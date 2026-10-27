@@ -107,20 +107,6 @@ The project uses the OBS Studio 33.0.0 source and the OBS Windows and Qt 6
 dependency packages. CMake downloads and verifies the configured dependency
 archives; a separate manual OBS SDK installation is not required.
 
-From a Visual Studio Developer PowerShell, run:
-
-```powershell
-cmake --preset windows-x64
-cmake --build --preset windows-x64 --parallel
-```
-
-The build preset uses the `RelWithDebInfo` configuration. The resulting plugin
-is located at:
-
-```text
-build_x64\RelWithDebInfo\auto-volume.dll
-```
-
 The first configuration may take several minutes while OBS dependencies are
 downloaded and prepared.
 
