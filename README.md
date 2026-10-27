@@ -18,6 +18,8 @@ per scene.
   - **Linear Fade** — volume changes at a constant rate.
   - **Crossfade** — attempts to fade out sources found only in the outgoing
     scene while fading in sources found only in the incoming scene.
+- Set a per-scene delay in milliseconds before a scene-change fade begins.
+- Export and import volume profiles and fade settings as JSON files.
 - Reset a selected scene's audio levels and fade settings to their defaults.
 
 ## Important notes
@@ -62,11 +64,13 @@ available; place its `auto-volume.dll` in the same plugin folder shown above.
 ## Use the plugin
 
 1. Open **Tools > Auto Volume**.
-2. Choose a scene from **Select Scenes**. The **Audio Source** table shows
+2. Use **Save Profile** or **Load Profile** in the upper-right corner to
+   export or import a JSON profile.
+3. Choose a scene from **Select Scenes**. The **Audio Source** table shows
    sources in that scene, including sources in groups and nested scenes.
-3. Set each source's level using the slider or the **Volume (%)** field.
+4. Set each source's level using the slider or the **Volume (%)** field.
    The allowed range is 0% to 100%.
-4. Set the fade options for the selected scene:
+5. Set the fade options for the selected scene:
 
    | Setting | Description |
    | --- | --- |
@@ -74,12 +78,27 @@ available; place its `auto-volume.dll` in the same plugin folder shown above.
    | **Fade minimum (s)** | Minimum duration used for smaller changes, capped at Fade Duration. |
    | **Fade Short Length (%)** | Extends the duration of smaller volume changes. It has no effect on a full 0%-to-100% change and may be masked by Fade minimum. |
    | **Fade Style** | Selects Normal Fade, Linear Fade, or Crossfade for scene transitions. |
+   | **Delay (ms)** | Wait time before the selected scene's volume transition starts. The default is 0 ms; the value can be set from 0 to 60,000 ms. It does not delay manual slider or percentage edits. |
 
-5. Repeat for other scenes. Profiles and fade settings are saved per scene and
+6. Repeat for other scenes. Profiles and fade settings are saved per scene and
    scene collection.
-6. Enable **Active Auto** to apply profiles automatically when the active
+7. Enable **Active Auto** to apply profiles automatically when the active
    scene changes. When disabled, you can still edit profiles, but the plugin
    will not automatically apply them to the mixer.
+
+### Save and load JSON profiles
+
+**Save Profile** exports saved source levels and fade settings, including their
+scene-collection and scene names, to a `.json` file. **Load Profile** validates
+the file before applying it.
+
+Loading uses merge behavior: imported source levels update matching
+collection/scene/source entries, and imported fade settings update matching
+scenes. Existing entries not present in the file are kept. Default fade
+settings are updated from the file. The **Active Auto** checkbox is not
+included in the profile and is not changed. If the imported profile affects
+the currently active scene while Active Auto is enabled, its audio profile is
+applied immediately, respecting that scene's **Delay (ms)**.
 
 ### Reset scene settings
 
@@ -90,6 +109,7 @@ scene's audio levels to 100% and its fade settings to:
 - Fade minimum: 6 seconds
 - Fade Short Length: 75%
 - Fade Style: Normal Fade
+- Delay: 0 ms
 
 The **Active Auto** checkbox is not changed by the reset.
 
@@ -98,24 +118,21 @@ The **Active Auto** checkbox is not changed by the reset.
 ### Requirements
 
 - Windows 64-bit
-- Visual Studio 2022 Build Tools with **Desktop development with C++**
-- Windows SDK 10.0.22621
-- CMake 3.28–3.30
-- Internet access for the initial CMake configuration and dependency setup
+- OBS Studio 33.0.0
+
+Note: 
 
 The project uses the OBS Studio 33.0.0 source and the OBS Windows and Qt 6
 dependency packages. CMake downloads and verifies the configured dependency
 archives; a separate manual OBS SDK installation is not required.
 
-The first configuration may take several minutes while OBS dependencies are
-downloaded and prepared.
+##
 
-## Legacy Lua script
+<img width="189" height="204" alt="image" src="https://github.com/user-attachments/assets/c4660a81-a8b4-4b1f-a4cc-364464f49f24" />
 
-`SCENE_AUDIO_VOLUME.lua` is an older script and is not run by this native
-plugin. Its profiles are not imported automatically. If you used that script,
-disable it under **Tools > Scripts** before enabling Auto Volume to prevent
-both systems from changing source volumes.
+## Overview
+
+<img width="650" height="576" alt="image" src="https://github.com/user-attachments/assets/f3a10a1c-50a1-42db-ad6f-02d383316769" />
 
 ## License and attribution
 
@@ -128,8 +145,4 @@ Created by **Babay Chang**.
 
 
 
-
-
-
-<img width="650" height="510" alt="image" src="https://github.com/user-attachments/assets/6b6fee26-d21d-4cb2-b2bf-539ccb8dc710" />
 
